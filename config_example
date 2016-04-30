@@ -1,0 +1,10 @@
+{
+	"keys": {
+		"discord": "DISCORD KEY HERE",
+		"twitter_consumer": "TWITTER KEY HERE",
+		"twitter_consumer_secret": "TWITTER SECRET HERE",
+		"twitter_access": "TWITTER KEY HERE",
+		"twitter_access_secret": "TWITTER SECRET HERE",
+		"mashape": "MASHAPE KEY HERE (used for hearthstone API)"
+	}
+}
