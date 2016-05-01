@@ -34,11 +34,12 @@ class Twitter:
             if self.keys_set:
                 status = self.twitter_api.get_status(tweet.group('id'))
                 media = status._json['extended_entities']['media']
-                strout = ""
+                strout1 = re.sub(r'https?:\/\/[^\s]*', ' ', status.text)
+                strout2 = ""
                 for m in media:
-                    strout += m['media_url'] + " "
-                await self.bot.send_message(message.channel, status.text, tts=True)
-                await self.bot.send_message(message.channel, strout)
+                    strout2 += m['media_url'] + " "
+                await self.bot.send_message(message.channel, strout1, tts=True)
+                await self.bot.send_message(message.channel, strout2)
             else:
                 await self.bot.send_message("error: missing twitter API key")
                 return
