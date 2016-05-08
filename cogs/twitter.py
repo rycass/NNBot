@@ -33,13 +33,31 @@ class Twitter:
         if tweet:
             if self.keys_set:
                 status = self.twitter_api.get_status(tweet.group('id'))
-                media = status._json['extended_entities']['media']
-                strout1 = re.sub(r'https?:\/\/[^\s]*', ' ', status.text)
+            
+                #Check for TTS
+                tts = False
+                if ".tts" in message.content:
+                    tts = True
+                    
+                #Scrape images/videos
                 strout2 = ""
-                for m in media:
-                    strout2 += m['media_url'] + " "
-                await self.bot.send_message(message.channel, strout1, tts=True)
-                await self.bot.send_message(message.channel, strout2)
+                if 'extended_entities' in status._json:
+                    media = status._json['extended_entities']['media']
+                    for m in media:
+                        if m['type'] == 'photo': #This is an image. Pull it out directly.
+                            strout2 += m['media_url'] + " "
+                        if m['type'] == 'video' or m['type'] == 'animated_gif': #This is a video. Pull the first MP4 you can find out.
+                            for variant in m['video_info']['variants']:
+                                if variant['content_type'] == 'video/mp4':
+                                    strout2 += variant['url'] + " "
+                                    break;
+                
+                #Print what we want/found
+                if tts:
+                    strout1 = re.sub(r'https?:\/\/[^\s]*', ' ', status.text)
+                    await self.bot.send_message(message.channel, strout1, tts=True)
+                if strout2 != "":
+                    await self.bot.send_message(message.channel, strout2)
             else:
                 await self.bot.send_message("error: missing twitter API key")
                 return
