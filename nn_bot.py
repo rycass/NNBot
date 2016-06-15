@@ -40,20 +40,6 @@ async def unload(extension_name : str):
     bot.unload_extension(extension_name)
     await bot.say("{} unloaded.".format(extension_name))
 
-#@bot.listen('on_message')
-#async def scrape_tweet(message):
-#    tweet = re.match(r'https?://(mobile.)?twitter.com/(#!/)?([_0-9a-zA-Z]+)/status/(?P<id>\d+)', message.content)
-#    if tweet:
-#        if bot.fetch_key("twitter_consumer") and bot.fetch_key("twitter_consumer_secret") and bot.fetch_key("twitter_access") and bot.fetch_key("twitter_access_secret"):
-#            status = twitter_api.get_status(tweet.group('id'))
-#            media = status._json['extended_entities']['media']
-#            strout = ""
-#            for m in media:
-#                strout += m['media_url'] + " "
-#            await bot.send_message(message.channel, strout)
-#        else:
-#            await bot.send_message("error: missing twitter API key")
-#            return
 def start():
         try:
             json_file = open('config', 'r')

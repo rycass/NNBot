@@ -29,7 +29,7 @@ class Twitter:
             print("error: can't read config file")
 
     async def scrape_tweet(self, message):
-        tweet = re.match(r'https?://(mobile.)?twitter.com/(#!/)?([_0-9a-zA-Z]+)/status/(?P<id>\d+)', message.content)
+        tweet = re.search(r'https?:\/\/(mobile.)?twitter.com\/(#!\/)?([_0-9a-zA-Z]+)\/status\/(?P<id>\d+)', message.content)
         if tweet:
             if self.keys_set:
                 status = self.twitter_api.get_status(tweet.group('id'))
@@ -61,7 +61,7 @@ class Twitter:
             else:
                 await self.bot.send_message("error: missing twitter API key")
                 return
-            
+
 def setup(bot):
     b = Twitter(bot)
     bot.add_listener(b.scrape_tweet, "on_message")
